@@ -85,7 +85,9 @@ class AmazonS3PrivateStreamWrapper extends AmazonS3StreamWrapper {
     // created yet
     $path = explode('/', $local_path);
     if ($path[0] == 'styles') {
-      if (!$this->redirect_404 && !$this->_amazons3_get_object($this->uri, $this->caching)) {
+      // Don't try 404 redirect since it's insecure to have a static site and it won't
+      // serve ACL_PRIVATE anyway.
+      if (!$this->_amazons3_get_object($this->uri, $this->caching)) {
         array_shift($path);
         return url('system/files/styles/' . implode('/', $path), array('absolute' => true));
       }
