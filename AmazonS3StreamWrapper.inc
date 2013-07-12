@@ -100,7 +100,7 @@ class AmazonS3StreamWrapper implements DrupalStreamWrapperInterface {
     $this->_constructOnce();
   }
 
-  function _constructOnce() {
+  protected function _constructOnce() {
     if (!$this->constructed) {
       $this->bucket = $bucket = variable_get('amazons3_bucket', '');
 
@@ -880,7 +880,7 @@ class AmazonS3StreamWrapper implements DrupalStreamWrapperInterface {
       $uri = $this->uri;
     }
 
-    $path  = str_replace('s3://', '', $uri);
+    $path  = preg_replace('/^(.*)\:\/\//', '', $uri);
     $path = trim($path, '/');
     return $path;
   }
